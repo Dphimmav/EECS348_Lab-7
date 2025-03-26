@@ -1,16 +1,13 @@
 # DO NOT MODIFY
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  # branch 1.16.x
-  URL https://github.com/google/googletest/archive/e88cb95b92acbdce9b058dd894a68e1281b38495.zip
-)
-FetchContent_MakeAvailable(googletest)
+cmake_minimum_required(VERSION 3.13)
+project(EECS348-Lab-7)
 
-enable_testing()
-add_executable(tests tests.cpp)
-target_include_directories(tests PRIVATE ..)
-target_link_libraries(tests assignment GTest::gtest_main)
-include(GoogleTest)
-gtest_discover_tests(tests)
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
+file(GLOB src *.c *.cpp)
+list(FILTER src EXCLUDE REGEX ".*main\\.c(c|pp|xx)?")
+add_subdirectory(tests)
+add_library(assignment ${src})
